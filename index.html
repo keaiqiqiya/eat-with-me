@@ -1,67 +1,110 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#faf8f2">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#f7f5ef" />
 <title>饭搭子 · 今天吃什么</title>
-<style>
-:root{--bg:#f7f4ed;--paper:#fffdf9;--ink:#24372e;--muted:#7d8c82;--line:#e9e4d8;--green:#67a96f;--green2:#7cba82;--mint:#edf5e9;--cream:#fff7e8;--peach:#f7dfd0;--yellow:#f7e4a7;--shadow:0 20px 55px rgba(73,88,71,.10);--r:28px}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 90% 5%,#edf4e8 0,transparent 28%),linear-gradient(180deg,#fbfaf6,#f7f4ed);color:var(--ink);font-family:ui-rounded,"SF Pro Rounded","PingFang SC","Microsoft YaHei",system-ui,sans-serif}button,input,textarea{font:inherit}button{cursor:pointer}.page{width:min(1280px,calc(100% - 34px));margin:auto;padding:18px 0 64px}.topbar{height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{display:flex;align-items:center;gap:12px;font-weight:900}.brand-mark{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;background:#fff2db;font-size:25px;border:1px solid #efe1ca}.brand small{display:block;color:#9a9f98;font-size:10px;font-weight:600;margin-top:2px}.nav{display:flex;gap:8px}.nav button{border:0;background:transparent;color:#738079;border-radius:999px;padding:11px 16px;font-size:13px}.nav button:hover{background:#fff}.loc{border:1px solid #dfe9dc;background:#eff6ec;color:#57785e;border-radius:999px;padding:10px 15px;font-size:13px}
-.hero{display:grid;grid-template-columns:1.03fr .97fr;min-height:690px;background:var(--paper);border:1px solid var(--line);border-radius:36px;overflow:hidden;box-shadow:var(--shadow)}.hero-copy{padding:58px 54px;display:flex;flex-direction:column;justify-content:center;background:linear-gradient(135deg,#fffdf9,#fbf8f0)}.eyebrow{font-size:13px;letter-spacing:.14em;font-weight:900;color:#6c9a72}.hero h1{font-size:82px;letter-spacing:-.06em;line-height:.98;margin:18px 0 18px}.intro{font-size:18px;color:#69786e;line-height:1.75;margin:0 0 26px}.speech{background:#fff;border:1px solid var(--line);border-radius:24px 24px 24px 7px;padding:18px 20px;color:#647168;box-shadow:0 10px 28px rgba(73,88,71,.07);font-size:16px;line-height:1.7;margin-bottom:26px}.speech b{color:#496c50}.hero-art{position:relative;min-height:690px;background:#eef4e9}.hero-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center}.hero-art:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,253,249,.18),transparent 35%)}
-.roll{width:100%;border:0;border-radius:24px;padding:22px 28px;background:linear-gradient(90deg,#5fa468,#79b67d);color:#fff;display:flex;align-items:center;justify-content:center;gap:14px;font-weight:900;font-size:24px;box-shadow:0 15px 30px rgba(86,145,95,.22);transition:.18s}.roll:hover{transform:translateY(-2px)}.roll .die{font-size:30px}.roll.spinning .die{animation:spin .16s linear infinite}@keyframes spin{to{transform:rotate(90deg)}}
-.mood-title{display:flex;justify-content:space-between;align-items:end;margin:28px 0 12px}.mood-title h3{margin:0;font-size:18px}.mood-title span{color:#a0a79f;font-size:11px}.moods{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.mood{min-height:120px;border:1px solid var(--line);background:#fff;border-radius:22px;padding:14px 8px;display:grid;place-items:center;align-content:center;gap:10px;color:#526259;transition:.18s}.mood:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(73,88,71,.07)}.mood.active{background:#f2f8ee;border-color:#bfd6bd;color:#43724e}.mood b{font-size:34px}.mood span{font-size:15px;font-weight:800}
-.section{padding-top:30px}.section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:16px}.section-head h2{font-size:27px;margin:0 0 5px}.section-head p{margin:0;color:#8e9891;font-size:13px}.section-head button{border:0;background:#eef5eb;color:#5c8062;border-radius:999px;padding:10px 14px}.cats{display:grid;grid-template-columns:repeat(8,1fr);gap:12px}.cat{min-height:116px;border:1px solid var(--line);border-radius:22px;background:rgba(255,253,249,.92);display:grid;place-items:center;align-content:center;gap:8px;color:#526158;box-shadow:0 9px 24px rgba(73,88,71,.05)}.cat b{font-size:36px}.cat span{font-size:14px;font-weight:800}.cat:hover,.cat.active{background:#eff6eb;color:#46744f;transform:translateY(-2px)}
-.history-wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}.card{background:rgba(255,253,249,.94);border:1px solid var(--line);border-radius:28px;padding:24px;box-shadow:var(--shadow)}.checkin-list{display:grid;gap:12px}.checkin{display:grid;grid-template-columns:72px 1fr auto;gap:14px;align-items:center;background:#faf8f3;border-radius:18px;padding:10px}.checkin-thumb{width:72px;height:72px;border-radius:16px;background:#eef4e9;display:grid;place-items:center;font-size:32px;object-fit:cover}.checkin b{font-size:15px}.checkin small{display:block;margin-top:5px;color:#909991;font-size:11px}.score{font-weight:900;color:#eeb743}.empty{padding:28px;text-align:center;color:#9aa29b}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.stat{background:#faf8f3;border-radius:20px;padding:22px;text-align:center}.stat b{display:block;font-size:30px}.stat span{font-size:11px;color:#939c94}.quote{margin-top:16px;background:linear-gradient(135deg,#f2f7ed,#fff8eb);border-radius:22px;padding:18px;color:#67746b;line-height:1.7;font-size:13px}
-.backdrop{position:fixed;inset:0;z-index:100;background:rgba(40,52,44,.36);backdrop-filter:blur(9px);display:grid;place-items:center;padding:18px;opacity:0;pointer-events:none;transition:.2s}.backdrop.open{opacity:1;pointer-events:auto}.modal{width:min(520px,100%);background:#fffdf9;border:1px solid var(--line);border-radius:30px;padding:26px;box-shadow:0 30px 90px rgba(44,58,47,.24);position:relative;max-height:88vh;overflow:auto}.close{position:absolute;right:16px;top:14px;width:36px;height:36px;border:0;border-radius:50%;background:#f1efe8;color:#788078;font-size:22px}.modal h2{font-size:28px;margin:0 0 5px}.modal>p{color:#8b958d;font-size:13px;margin:0 0 18px}.result-emoji{font-size:58px;text-align:center}.result-name{text-align:center;font-size:36px;font-weight:900;margin:5px 0}.result-desc{text-align:center;color:#7c8980;line-height:1.7;font-size:14px}.result-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}.btn{border:0;border-radius:18px;padding:15px 14px;font-weight:800;font-size:14px}.btn.soft{background:#f0f3ed;color:#607067}.btn.primary{background:linear-gradient(90deg,#5fa468,#78b67d);color:#fff}.btn.wide{grid-column:1/-1}.form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field span{font-size:11px;color:#7c8980;font-weight:800}.field input,.field textarea{border:1px solid #e7e4db;background:#faf9f5;border-radius:14px;padding:12px;outline:none;color:#405047}.field textarea{min-height:90px;resize:vertical}.upload{border:1.5px dashed #d4dfd0;background:#f8fbf6;border-radius:18px;padding:16px;text-align:center;margin:16px 0}.upload input{display:none}.preview{display:flex;gap:8px;overflow:auto;margin-top:10px}.preview img{width:74px;height:74px;border-radius:14px;object-fit:cover}.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:#30483a;color:#fff;padding:11px 15px;border-radius:999px;font-size:12px;opacity:0;pointer-events:none;transition:.2s;z-index:150}.toast.show{opacity:1;transform:translate(-50%,0)}
-@media(max-width:960px){.hero{grid-template-columns:1fr}.hero-art{order:-1;min-height:460px}.hero-copy{padding:38px 30px}.hero h1{font-size:64px}.cats{grid-template-columns:repeat(4,1fr)}.history-wrap{grid-template-columns:1fr}.nav{display:none}}
-@media(max-width:620px){.page{width:min(100% - 20px,1280px);padding-bottom:40px}.topbar{height:62px}.brand small{display:none}.loc{font-size:11px}.hero{border-radius:26px}.hero-art{min-height:360px}.hero-copy{padding:28px 20px}.eyebrow{font-size:10px}.hero h1{font-size:50px;margin:12px 0}.intro{font-size:15px}.speech{font-size:14px;padding:15px 16px}.roll{font-size:19px;padding:18px}.moods{grid-template-columns:repeat(2,1fr)}.mood{min-height:104px}.cats{grid-template-columns:repeat(2,1fr)}.cat{min-height:102px}.section-head{align-items:flex-start;flex-direction:column;gap:10px}.history-wrap{gap:12px}.form{grid-template-columns:1fr}.field.full{grid-column:auto}.result-actions{grid-template-columns:1fr}.btn.wide{grid-column:auto}}
-</style>
+<link rel="stylesheet" href="./styles.css?v=9">
 </head>
 <body>
-<div class="page">
-<header class="topbar"><div class="brand"><span class="brand-mark">🐱</span><span>饭搭子<small>EAT WITH ME</small></span></div><nav class="nav"><button onclick="go('home')">首页</button><button onclick="go('cats')">菜系</button><button onclick="go('history')">我的打卡</button></nav><button class="loc">📍 北京 · 中关村</button></header>
-<main>
-<section class="hero" id="home">
-  <div class="hero-copy">
-    <div class="eyebrow">FOOD DICE · ZHONGGUANCUN</div>
-    <h1>今天吃什么？</h1>
-    <p class="intro">别把宝贵的下班时间浪费在纠结上。<br>告诉我今天的状态，剩下的交给我。</p>
-    <div class="speech">嗨！今天想吃点什么？<br><b>选择你的心情，我来帮你摇～ ✨</b></div>
-    <button class="roll" id="rollBtn"><span class="die">🎲</span><span>开始摇一摇</span><span>✨</span></button>
-    <div class="mood-title"><h3>今天是什么状态？</h3><span>选一个就好</span></div>
-    <div class="moods" id="moods"></div>
-  </div>
-  <div class="hero-art"><img src="" data-boy alt="年轻二次元小帅哥服务员"></div>
-</section>
-<section class="section" id="cats"><div class="section-head"><div><h2>想自己挑个方向？</h2><p>16 类常见选择，卡片做大一点，不让你看得眼花。</p></div><button id="shuffleBtn">换一批灵感 ↻</button></div><div class="cats" id="catGrid"></div></section>
-<section class="section" id="history"><div class="section-head"><div><h2>我的吃饭档案</h2><p>摇出来的不算，最后真的吃了什么才算。</p></div><button id="newCheckin">＋ 记录一顿饭</button></div><div class="history-wrap"><div class="card"><div class="checkin-list" id="checkinList"></div></div><div class="card"><div class="stats" id="stats"></div><div class="quote">“生活或许不容易，但吃到好吃的那一刻，一切都值得。” 🍚</div></div></div></section>
-</main>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">🍚</div><div><b>饭搭子</b><small>EAT WITH ME</small></div></div>
+    <nav class="nav" id="nav">
+      <button class="active" data-view="home"><span class="ico">⌂</span>首页</button>
+      <button data-view="roll"><span class="ico">🎲</span>摇一摇</button>
+      <button data-view="checkin"><span class="ico">✓</span>吃饭打卡</button>
+      <button data-view="records"><span class="ico">☰</span>我的记录</button>
+      <button data-view="favorites"><span class="ico">♡</span>餐厅收藏</button>
+      <button data-view="stats"><span class="ico">◫</span>统计分析</button>
+    </nav>
+    <div class="side-profile">
+      <div class="profile-line"><img class="avatar" data-boy alt="头像"><div><b>干饭小天才</b><span>私人吃饭档案</span></div></div>
+      <p id="sideQuote">人生苦短，先吃饭吧。</p>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar"><h2 id="viewTitle">今天吃什么？</h2><div class="top-actions"><button class="pill">📍 北京 · 中关村</button><button class="ghost-small" id="shareBtn">分享今日选择</button></div></header>
+
+    <section class="view active" id="view-home">
+      <div class="hero">
+        <div class="hero-main card">
+          <div class="eyebrow">FOOD DICE · ZHONGGUANCUN</div>
+          <h1>今天吃什么？</h1>
+          <p class="hero-sub">不想选也没关系。<b>告诉我今天的状态，剩下的交给我。</b></p>
+          <div class="home-moods" id="homeMoods"></div>
+          <button class="home-roll" id="homeRoll"><span>🎲</span><span>帮我决定今天吃什么</span><span>✨</span></button>
+          <div class="hero-note">不满意可以重摇；真正吃了什么，记得回来打卡。</div>
+        </div>
+        <aside class="waiter-card card">
+          <div class="tiny-stars">今日值班 ✨</div>
+          <div class="waiter-img"><img data-boy alt="年轻二次元美食小帅哥"></div>
+          <div class="waiter-copy"><div class="waiter-tag">YOUR FOOD BUDDY</div><h3>小安 · 今日服务员</h3><p>“纠结的时候就交给我。你负责吃得开心，我负责拍板。”</p><div class="waiter-bubble" id="waiterBubble">今天看起来很适合吃点让人开心的东西。</div></div>
+        </aside>
+      </div>
+      <div class="home-row">
+        <section class="home-panel card"><div class="section-head"><div><h3>快速找个方向</h3><p>8 个常用类别，想细看可以去「摇一摇」</p></div><button class="text-btn" data-go="roll">更多选择 →</button></div><div class="quick-cats" id="quickCats"></div></section>
+        <section class="home-panel card"><div class="section-head"><div><h3>最近吃过</h3><p>真正吃过的，才进入你的档案</p></div><button class="text-btn" data-go="records">全部记录 →</button></div><div class="recent-mini" id="homeRecent"></div><div class="home-stats" id="homeStats"></div></section>
+      </div>
+    </section>
+
+    <section class="view" id="view-roll">
+      <div class="page-head"><div><h1>🎲 摇一摇</h1><p>先选状态，再让骰子替你做决定。</p></div><button class="soft-small" id="resetFilters">重置筛选</button></div>
+      <div class="roll-layout">
+        <section class="roll-control card">
+          <div class="section-head"><div><h3>今天是什么状态？</h3><p>可以多选，会优先从更适合的菜系里随机</p></div></div>
+          <div class="all-moods" id="allMoods"></div>
+          <div class="section-head" style="margin-top:22px"><div><h3>今天先排除</h3><p>不想吃的临时踢出去</p></div></div>
+          <div class="exclude-row" id="excludes"></div>
+          <div class="roll-stage">
+            <div class="big-die" id="rollEmoji">🎲</div><h2 id="rollName">准备好了吗？</h2><p id="rollDesc">点击下面，让今天少纠结一次。</p>
+            <div class="roll-buttons"><button class="sub" id="reroll">↻ 再摇一次</button><button class="sub" id="detailRoll">🎯 再具体一点</button><button class="main" id="acceptRoll">就吃这个！ ✨</button></div>
+          </div>
+          <div class="saved-suggestion" id="savedSuggestion">你收藏或吃过的餐厅会在这里优先出现；没有历史记录时不会瞎编真实店名。</div>
+        </section>
+        <aside class="roll-side card"><div class="waiter-mini"><img data-boy alt="美食服务员"></div><h3>小安的建议</h3><p id="rollWaiterText">“不要把十分钟花在打开五个外卖 App 上。摇一次，给自己一个答案。”</p><div class="saved-rests" id="savedRests"></div></aside>
+      </div>
+      <div class="page-head" style="margin-top:26px"><div><h1 style="font-size:27px">16 类常见选择</h1><p>也可以自己点一个方向，再随机具体吃什么。</p></div></div>
+      <div class="cat-grid" id="catGrid"></div>
+    </section>
+
+    <section class="view" id="view-checkin">
+      <div class="page-head"><div><h1>✓ 吃饭打卡</h1><p>推荐不重要，最后实际去了哪里、吃了什么才重要。</p></div></div>
+      <section class="form-card card"><div class="checkin-grid">
+        <label class="field"><span>骰子推荐</span><input id="recInput" placeholder="例如：日料 · 寿喜烧"></label>
+        <label class="field"><span>实际吃了什么 *</span><input id="actualInput" placeholder="例如：寿喜烧"></label>
+        <label class="field"><span>餐厅名字</span><input id="restaurantInput" placeholder="例如：中关村某家店"></label>
+        <label class="field"><span>人均（元）</span><input id="priceInput" type="number" min="0" placeholder="例如：88"></label>
+        <label class="field"><span>评分</span><div class="star-row" id="stars"></div></label>
+        <label class="field"><span>这次心情</span><select id="moodInput"><option>随便吃点</option><option>想吃辣</option><option>清淡一点</option><option>省点钱</option><option>吃好一点</option><option>今天好累</option><option>和朋友</option><option>不想走远</option></select></label>
+        <label class="field full"><span>一句话评价</span><textarea id="commentInput" placeholder="例如：锅底很好吃，下次还想来。"></textarea></label>
+        <div class="upload-box"><button class="upload-btn" id="photoBtn">📷</button><input id="photoInput" type="file" accept="image/*" multiple><div class="upload-copy"><b>上传这一顿的照片</b><span>食物、餐厅、菜单都可以；图片会压缩后保存在当前浏览器。</span></div><div class="photo-preview" id="photoPreview"></div></div>
+        <label class="switchline"><span><b>收藏这家餐厅</b><small>以后随机到类似菜系时优先提醒你</small></span><input id="favInput" type="checkbox"></label>
+        <button class="save-checkin" id="saveCheckin">保存这次打卡 ✨</button>
+      </div></section>
+    </section>
+
+    <section class="view" id="view-records">
+      <div class="page-head"><div><h1>☰ 我的记录</h1><p>你的私人美食日记，也是一面小小的照片墙。</p></div><button class="primary-small" data-go="checkin">＋ 新打卡</button></div>
+      <div id="recordGrid" class="record-grid"></div>
+    </section>
+
+    <section class="view" id="view-favorites">
+      <div class="page-head"><div><h1>♡ 餐厅收藏</h1><p>只展示你自己打卡并收藏过的餐厅，不虚构真实店铺。</p></div></div>
+      <div id="favGrid" class="fav-grid"></div>
+    </section>
+
+    <section class="view" id="view-stats">
+      <div class="page-head"><div><h1>◫ 统计分析</h1><p>看看你到底最爱吃什么，以及最近花了多少。</p></div></div>
+      <div class="stat-grid" id="statGrid"></div>
+      <div class="charts"><section class="chart-card card"><h3>最常出现的菜系</h3><div class="bar-list" id="catBars"></div></section><section class="chart-card card"><h3>照片墙</h3><div class="photo-wall" id="photoWall"></div></section></div>
+    </section>
+  </main>
 </div>
-<div class="backdrop" id="resultModal"><div class="modal"><button class="close" data-close="resultModal">×</button><div class="result-emoji" id="resultEmoji">🍣</div><div class="result-name" id="resultName">日料 · 寿喜烧</div><div class="result-desc" id="resultDesc">今天就吃这个。别再给选择困难留下机会啦～</div><div class="result-actions"><button class="btn soft" id="rerollBtn">↻ 再摇一次</button><button class="btn soft" id="detailBtn">🎯 再具体一点</button><button class="btn primary wide" id="acceptBtn">就吃这个！ ✨</button></div></div></div>
-<div class="backdrop" id="checkinModal"><div class="modal"><button class="close" data-close="checkinModal">×</button><h2>📷 记录这一顿</h2><p>可以和朋友分享选择，也可以慢慢积累自己的吃饭档案。</p><div class="form"><label class="field"><span>骰子推荐</span><input id="recInput"></label><label class="field"><span>实际吃了什么 *</span><input id="actualInput"></label><label class="field"><span>餐厅名字</span><input id="restaurantInput"></label><label class="field"><span>人均（元）</span><input id="priceInput" type="number" min="0"></label><label class="field full"><span>一句话评价</span><textarea id="commentInput"></textarea></label></div><div class="upload"><input id="photoInput" type="file" accept="image/*"><button class="btn soft" id="photoBtn">＋ 上传食物照片</button><div class="preview" id="preview"></div></div><button class="btn primary" id="saveBtn" style="width:100%">保存打卡 ✨</button></div></div>
+<nav class="mobile-nav" id="mobileNav"><button class="active" data-view="home">⌂<span>首页</span></button><button data-view="roll">🎲<span>摇一摇</span></button><button data-view="checkin">✓<span>打卡</span></button><button data-view="records">☰<span>记录</span></button><button data-view="stats">◫<span>统计</span></button></nav>
 <div class="toast" id="toast"></div>
-<script>
-const DATA=[['川湘菜','🌶️',['川菜','湘菜','江西小炒','酸菜鱼','烤鱼','干锅'],['辣']],['火锅','🍲',['重庆火锅','四川火锅','潮汕牛肉火锅','北京铜锅涮肉','椰子鸡','菌子火锅'],['辣','累']],['烧烤','🍖',['东北烧烤','新疆烧烤','烤羊肉串','韩式烤肉','夜宵烧烤'],['累']],['日料','🍣',['寿司','日式拉面','烧鸟','寿喜烧','日式烤肉','鳗鱼饭'],['清淡']],['韩餐','🥘',['韩式烤肉','部队锅','石锅拌饭','冷面','炸鸡'],[]],['西餐','🍝',['意大利面','披萨','牛排','焗饭','Brunch'],['清淡']],['面 / 粉','🍜',['兰州牛肉面','重庆小面','刀削面','油泼面','云南米线','螺蛳粉'],['省钱']],['米饭套餐','🍛',['盖饭','黄焖鸡','煲仔饭','卤肉饭','咖喱饭'],['省钱']],['西北菜','🫓',['新疆菜','大盘鸡','手抓饭','羊肉泡馍'],[]],['东南亚菜','🥭',['泰国菜','越南河粉','冬阴功','海南鸡饭'],['清淡']],['小吃','🥟',['麻辣烫','冒菜','生煎','锅贴','肉夹馍'],['省钱']],['汉堡快餐','🍔',['汉堡','炸鸡','三明治','热狗'],['省钱']],['轻食','🥗',['沙拉','Poke','低脂餐','健身餐'],['清淡']],['家常菜','🍚',['北京菜','东北菜','粤菜','江浙菜','家常小炒'],['清淡']],['Brunch','☕',['贝果','三明治','松饼','可颂','咖啡简餐'],['清淡']],['甜品','🍰',['奶茶','果茶','冰淇淋','蛋糕','糖水'],[]]];
-const MOODS=[['random','😊','随便'],['辣','🌶️','想吃辣'],['清淡','🍃','清淡一点'],['省钱','👛','省点钱']];
-let mood='random',current=DATA[3],sub='寿喜烧',selectedFile=null;
-const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-async function loadBoy(){try{const t=await fetch('assets/boy.b64').then(r=>r.text());$('[data-boy]').src='data:image/webp;base64,'+t.trim()}catch(e){}}
-function go(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'})}
-function renderMoods(){$('#moods').innerHTML='';MOODS.forEach(([id,e,l])=>{const b=document.createElement('button');b.className='mood'+(mood===id?' active':'');b.innerHTML=`<b>${e}</b><span>${l}</span>`;b.onclick=()=>{mood=id;renderMoods()};$('#moods').appendChild(b)})}
-function renderCats(){const list=[...DATA].sort(()=>Math.random()-.5);$('#catGrid').innerHTML='';list.forEach(c=>{const b=document.createElement('button');b.className='cat'+(current===c?' active':'');b.innerHTML=`<b>${c[1]}</b><span>${c[0]}</span>`;b.onclick=()=>{current=c;sub=c[2][0];showResult();renderCats()};$('#catGrid').appendChild(b)})}
-function pool(){if(mood==='random')return DATA;const p=DATA.filter(x=>x[3].includes(mood));return p.length?p:DATA}
-function roll(){const btn=$('#rollBtn');btn.classList.add('spinning');setTimeout(()=>{const p=pool();current=p[Math.floor(Math.random()*p.length)];sub=current[2][Math.floor(Math.random()*current[2].length)];btn.classList.remove('spinning');showResult();renderCats()},520)}
-function showResult(){const name=`${current[0]} · ${sub}`;$('#resultEmoji').textContent=current[1];$('#resultName').textContent=name;$('#resultDesc').textContent=`今天就吃 ${sub}。如果没有强烈反对，就把它当作今天的小命运吧～`;$('#recInput').value=name;$('#actualInput').value=sub;open('resultModal')}
-function open(id){$('#'+id).classList.add('open')}function close(id){$('#'+id).classList.remove('open')}
-$$('[data-close]').forEach(b=>b.onclick=()=>close(b.dataset.close));$$('.backdrop').forEach(x=>x.onclick=e=>{if(e.target===x)close(x.id)});
-$('#rollBtn').onclick=roll;$('#rerollBtn').onclick=roll;$('#detailBtn').onclick=()=>{sub=current[2][Math.floor(Math.random()*current[2].length)];showResult()};$('#acceptBtn').onclick=()=>{close('resultModal');open('checkinModal')};$('#shuffleBtn').onclick=renderCats;$('#newCheckin').onclick=()=>open('checkinModal');
-$('#photoBtn').onclick=()=>$('#photoInput').click();$('#photoInput').onchange=e=>{selectedFile=e.target.files[0]||null;$('#preview').innerHTML='';if(selectedFile){const im=document.createElement('img');im.src=URL.createObjectURL(selectedFile);$('#preview').appendChild(im)}};
-function getItems(){try{return JSON.parse(localStorage.getItem('eatWithMeV7')||'[]')}catch{return[]}}function setItems(x){localStorage.setItem('eatWithMeV7',JSON.stringify(x))}
-async function fileData(f){if(!f)return'';return await new Promise(res=>{const r=new FileReader();r.onload=()=>res(r.result);r.readAsDataURL(f)})}
-function toast(t){const x=$('#toast');x.textContent=t;x.classList.add('show');clearTimeout(window.__t);window.__t=setTimeout(()=>x.classList.remove('show'),1800)}
-$('#saveBtn').onclick=async()=>{const actual=$('#actualInput').value.trim();if(!actual)return toast('先告诉我最后吃了什么～');const a=getItems();a.unshift({date:new Date().toISOString(),rec:$('#recInput').value,actual,restaurant:$('#restaurantInput').value.trim(),price:Number($('#priceInput').value)||0,comment:$('#commentInput').value.trim(),photo:await fileData(selectedFile),emoji:current[1]});setItems(a.slice(0,40));selectedFile=null;$('#preview').innerHTML='';close('checkinModal');renderHistory();toast('这一顿已经记下来啦 ✨')};
-function renderHistory(){const a=getItems(),box=$('#checkinList');if(!a.length){box.innerHTML='<div class="empty">还没有打卡记录。先摇一顿，吃完回来告诉我～</div>'}else{box.innerHTML=a.slice(0,5).map(x=>`<div class="checkin">${x.photo?`<img class="checkin-thumb" src="${x.photo}">`:`<div class="checkin-thumb">${x.emoji||'🍽️'}</div>`}<div><b>${x.actual}</b><small>${x.restaurant||'没记录餐厅'} · ${new Date(x.date).toLocaleDateString('zh-CN')}</small></div><span class="score">★</span></div>`).join('')}const priced=a.filter(x=>x.price);const avg=priced.length?Math.round(priced.reduce((s,x)=>s+x.price,0)/priced.length):0;$('#stats').innerHTML=[[a.length,'累计打卡'],[priced.length?`¥${avg}`:'—','平均人均'],[new Set(a.map(x=>x.actual)).size,'吃过种类'],[a.filter(x=>new Date(x.date).getMonth()===new Date().getMonth()).length,'本月打卡']].map(x=>`<div class="stat"><b>${x[0]}</b><span>${x[1]}</span></div>`).join('')}
-(async()=>{await loadBoy();renderMoods();renderCats();renderHistory()})();
-</script>
-</body></html>
+<script src="./app.js?v=9"></script>
+</body>
+</html>
