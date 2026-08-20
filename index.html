@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#faf8f2">
+  <meta name="description" content="饭搭子——你的私人美食选择助手，今天吃什么不再纠结。">
+  <title>饭搭子 · 今天吃什么？</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <svg class="svg-defs" aria-hidden="true">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v9a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8" cy="8" r="1.3"/><circle cx="16" cy="8" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="8" cy="16" r="1.3"/><circle cx="16" cy="16" r="1.3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 4h14v17H5z"/><path d="M9 2h6v4H9zM8 11h8M8 15h5"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5a3 3 0 0 1 3-3h5v18H7a3 3 0 0 0-3 2zM20 5a3 3 0 0 0-3-3h-5v18h5a3 3 0 0 1 3 2z"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8z"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10h4v10zM10 20V4h4v16zM16 20v-7h4v7z"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  </svg>
+
+  <aside class="sidebar" aria-label="主要导航">
+    <a class="brand" href="#top" aria-label="饭搭子首页">
+      <span class="brand-mark">饭</span>
+      <span><strong>饭搭子</strong><small>今日美味事务所</small></span>
+    </a>
+    <nav class="side-nav">
+      <a class="active" href="#top"><svg><use href="#i-home"/></svg><span>首页</span></a>
+      <a href="#fortune"><svg><use href="#i-dice"/></svg><span>摇一摇</span></a>
+      <a href="#coming-soon"><svg><use href="#i-check"/></svg><span>吃饭打卡</span></a>
+      <a href="#coming-soon"><svg><use href="#i-book"/></svg><span>我的记录</span></a>
+      <a href="#coming-soon"><svg><use href="#i-heart"/></svg><span>餐厅收藏</span></a>
+      <a href="#coming-soon"><svg><use href="#i-chart"/></svg><span>统计分析</span></a>
+    </nav>
+    <div class="profile-card">
+      <span class="profile-avatar">🍚</span>
+      <div><strong>我的干饭档案</strong><small>从第一顿喜欢的饭开始</small></div>
+      <svg><use href="#i-arrow"/></svg>
+    </div>
+  </aside>
+
+  <main id="top">
+    <header class="mobile-header">
+      <a class="brand" href="#top"><span class="brand-mark">饭</span><strong>饭搭子</strong></a>
+      <span class="location"><svg><use href="#i-pin"/></svg>北京 · 中关村</span>
+    </header>
+
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <span class="eyebrow"><svg><use href="#i-pin"/></svg>北京 · 中关村 <i></i> 今日营业中</span>
+        <p class="kicker">WHAT SHALL WE EAT?</p>
+        <h1 id="hero-title">今天吃<span>什么</span>？</h1>
+        <p class="hero-subtitle">交给命运决定，<br>美味不再纠结。</p>
+
+        <div class="mood-block">
+          <div class="section-label"><span>01</span><strong>今天是什么状态？</strong><small>可多选</small></div>
+          <div class="moods" role="group" aria-label="选择今天的状态">
+            <button class="mood active" data-mood="casual" aria-pressed="true"><b>😊</b>随便吃点</button>
+            <button class="mood" data-mood="spicy" aria-pressed="false"><b>🌶️</b>想吃辣</button>
+            <button class="mood" data-mood="light" aria-pressed="false"><b>🌿</b>清淡一点</button>
+            <button class="mood" data-mood="tired" aria-pressed="false"><b>😩</b>今天好累</button>
+          </div>
+        </div>
+
+        <button class="roll-cta" id="rollCta" type="button">
+          <span class="dice-icon">⚄</span>
+          <span><strong>开始摇一摇</strong><small>让今天的饭自己来找你</small></span>
+          <svg><use href="#i-arrow"/></svg>
+        </button>
+      </div>
+
+      <div class="character-stage" id="characterStage">
+        <div class="speech" id="speechBubble">今天想吃点什么？选个心情，我来帮你摇～</div>
+        <img id="characterImage" src="assets/characters/xiao-an.webp" width="1440" height="960" alt="私人美食服务员小安">
+        <div class="character-meta">
+          <span>今日饭搭子</span>
+          <strong id="characterName">小安</strong>
+          <small id="characterRole">温柔咖啡厅服务员</small>
+        </div>
+        <div class="character-switcher" aria-label="切换今日饭搭子">
+          <button class="character-arrow" id="prevCharacter" type="button" aria-label="上一位饭搭子">‹</button>
+          <div class="character-dots" id="characterDots"></div>
+          <button class="character-arrow" id="nextCharacter" type="button" aria-label="下一位饭搭子">›</button>
+        </div>
+      </div>
+
+      <aside class="fortune-card" id="fortune" aria-live="polite">
+        <div class="fortune-head"><span>今日命运之选</span><small id="fortuneCount">LUCKY 01</small></div>
+        <div class="fortune-photo"><img id="fortuneImage" src="assets/food/sukiyaki.webp" width="900" height="900" alt="寿喜烧"><span id="cuisineTag">日料</span></div>
+        <div class="fortune-body">
+          <p id="fortuneHint">暖乎乎的，今天正合适</p>
+          <h2 id="foodName">寿喜烧</h2>
+          <div class="fortune-reason"><span>小安说</span><p id="fortuneReason">甜咸汤汁裹着嫩牛肉，给今天一点刚刚好的满足感。</p></div>
+          <div class="fortune-actions">
+            <button class="primary" id="acceptFood" type="button">就吃这个 <svg><use href="#i-arrow"/></svg></button>
+            <button class="secondary" id="rerollFood" type="button" aria-label="再摇一次">↻</button>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="inspiration" aria-labelledby="inspiration-title">
+      <div class="section-heading">
+        <div><span>EXPLORE TASTES</span><h2 id="inspiration-title">今天想从哪种味道开始？</h2></div>
+        <a href="#fortune">看看全部 16 种菜系 <svg><use href="#i-arrow"/></svg></a>
+      </div>
+      <div class="food-grid">
+        <article class="food-card large"><img src="assets/food/sukiyaki.webp" alt="日料寿喜烧" loading="lazy"><div><span>01 / JAPANESE</span><h3>日料</h3><p>寿司 · 拉面 · 寿喜烧</p></div></article>
+        <article class="food-card"><img src="assets/food/sichuan-fish.webp" alt="川味辣鱼" loading="lazy"><div><span>02 / SPICY</span><h3>川湘菜</h3><p>热烈一点，也很好</p></div></article>
+        <article class="food-card"><img src="assets/food/korean-bbq.webp" alt="韩式烤肉" loading="lazy"><div><span>03 / KOREAN</span><h3>韩餐</h3><p>适合和朋友一起</p></div></article>
+        <article class="food-card"><img src="assets/food/sushi.webp" alt="精致寿司拼盘" loading="lazy"><div><span>04 / FRESH</span><h3>清爽一餐</h3><p>新鲜、轻盈、不负担</p></div></article>
+      </div>
+    </section>
+
+    <section class="coming-soon" id="coming-soon">
+      <span>下一站</span>
+      <h2>把每一顿喜欢，慢慢变成你的美食地图。</h2>
+      <p>吃饭打卡、收藏和个人统计将在首页确认后继续开发。</p>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="移动端导航">
+    <a class="active" href="#top"><svg><use href="#i-home"/></svg><span>首页</span></a>
+    <a href="#fortune"><svg><use href="#i-dice"/></svg><span>摇一摇</span></a>
+    <a class="add" href="#coming-soon"><svg><use href="#i-check"/></svg></a>
+    <a href="#coming-soon"><svg><use href="#i-book"/></svg><span>记录</span></a>
+    <a href="#coming-soon"><svg><use href="#i-heart"/></svg><span>我的</span></a>
+  </nav>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
