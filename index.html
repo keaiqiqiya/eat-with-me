@@ -69,6 +69,12 @@
           <span><strong>开始摇一摇</strong><small>让今天的饭自己来找你</small></span>
           <svg><use href="#i-arrow"/></svg>
         </button>
+        <a class="cafeteria-cta" href="#cafeteria">
+          <span>北大校园限定</span>
+          <strong>今天去哪个食堂？</strong>
+          <small>先排除不想去的，再交给饭搭子</small>
+          <svg><use href="#i-arrow"/></svg>
+        </a>
       </div>
 
       <div class="character-stage" id="characterStage">
@@ -106,11 +112,26 @@
         <div><span>EXPLORE TASTES</span><h2 id="inspiration-title">今天想从哪种味道开始？</h2></div>
         <a href="#fortune">看看全部 16 种菜系 <svg><use href="#i-arrow"/></svg></a>
       </div>
-      <div class="food-grid">
-        <article class="food-card large"><img src="assets/food/sukiyaki.webp" alt="日料寿喜烧" loading="lazy"><div><span>01 / JAPANESE</span><h3>日料</h3><p>寿司 · 拉面 · 寿喜烧</p></div></article>
-        <article class="food-card"><img src="assets/food/sichuan-fish.webp" alt="川味辣鱼" loading="lazy"><div><span>02 / SPICY</span><h3>川湘菜</h3><p>热烈一点，也很好</p></div></article>
-        <article class="food-card"><img src="assets/food/korean-bbq.webp" alt="韩式烤肉" loading="lazy"><div><span>03 / KOREAN</span><h3>韩餐</h3><p>适合和朋友一起</p></div></article>
-        <article class="food-card"><img src="assets/food/sushi.webp" alt="精致寿司拼盘" loading="lazy"><div><span>04 / FRESH</span><h3>清爽一餐</h3><p>新鲜、轻盈、不负担</p></div></article>
+      <div class="category-state" id="categoryState" hidden>正在从 <strong id="selectedCuisine"></strong> 中挑选 <button id="clearCuisine" type="button">取消筛选</button></div>
+      <div class="food-grid" id="foodGrid" aria-label="选择菜系"></div>
+    </section>
+
+    <section class="cafeteria" id="cafeteria" aria-labelledby="cafeteria-title">
+      <div class="cafeteria-copy">
+        <span class="cafeteria-kicker">PKU CAMPUS FOOD</span>
+        <p class="cafeteria-number">02</p>
+        <h2 id="cafeteria-title">今天在学校<br><em>哪个食堂</em>吃？</h2>
+        <p>把不想去的食堂先划掉，剩下的交给命运。排除选项会保存在这台设备上。</p>
+        <div class="cafeteria-result" aria-live="polite">
+          <small>今日校园目的地</small>
+          <strong id="cafeteriaResult">还没有摇，先选一选吧</strong>
+          <span id="cafeteriaTip">没有排除任何食堂</span>
+        </div>
+        <button class="cafeteria-roll" id="cafeteriaRoll" type="button"><span>🎲</span>随机选择食堂</button>
+      </div>
+      <div class="cafeteria-panel">
+        <div class="cafeteria-panel-head"><div><span>今天先排除</span><strong>不想去的食堂</strong></div><button id="resetCafeterias" type="button">全部恢复</button></div>
+        <div class="cafeteria-options" id="cafeteriaOptions"></div>
       </div>
     </section>
 
