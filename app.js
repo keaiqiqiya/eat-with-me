@@ -62,6 +62,10 @@ const foods = [
   {id:'milk-tea',name:'奶茶配小蛋糕',cuisine:'甜品 / 饮品',image:foodImage.dessert,hint:'先来一点甜，再继续出发',reason:'想短暂休息一下时，一份小甜点就很刚好。',tags:['casual','friends']}
 ];
 
+const SUPABASE_URL = 'https://qeoiegzsaoauyrtbhbny.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_z9_kXoFqbH5xIjMHniDa3A_gi_oaT33';
+const supabaseClient = window.supabase?.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+
 const cuisineMeta = [
   ['川湘菜','SICHUAN',foodImage.spicy,'酸辣 · 小炒 · 烤鱼'],
   ['火锅','HOT POT',foodImage.hotpot,'铜锅 · 椰子鸡 · 牛肉锅'],
@@ -238,7 +242,7 @@ function rollSpecificFood(){
 
 function primaryAction(){
   if(recommendationPhase === 'specific') rollSpecificFood();
-  else if(recommendationPhase === 'done') showToast(`好，今天就吃${foods[foodIndex].name}！`);
+  else if(recommendationPhase === 'done') openCheckin();
   else startCuisineRoll();
 }
 
@@ -304,6 +308,170 @@ function showToast(message){
   toastTimer = setTimeout(() => toast.classList.remove('show'),2200);
 }
 
+let currentUser = null;
+let checkinRating = 0;
+let checkinFiles = [];
+let previewUrls = [];
+
+function escapeHtml(value = ''){
+  return String(value).replace(/[&<>'"]/g,char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
+}
+
+async function ensureUser(){
+  if(!supabaseClient) throw new Error('打卡服务尚未加载，请刷新页面重试');
+  const {data:{session}} = await supabaseClient.auth.getSession();
+  if(session?.user){currentUser = session.user;return currentUser}
+  const {data,error} = await supabaseClient.auth.signInAnonymously();
+  if(error) throw error;
+  currentUser = data.user;
+  return currentUser;
+}
+
+function openCheckin(){
+  const food = foods[foodIndex];
+  $('#checkinFoodImage').src = food.image;
+  $('#checkinFoodImage').alt = food.name;
+  $('#checkinCuisine').textContent = food.cuisine;
+  $('#checkinFoodName').textContent = food.name;
+  $('#checkinTitle').textContent = `打卡 · ${food.name}`;
+  checkinRating = 0;
+  checkinFiles = [];
+  $('#checkinForm').reset();
+  renderRating();
+  renderPhotoPreviews();
+  $('#checkinStatus').textContent = '';
+  $('#checkinModal').hidden = false;
+  document.body.classList.add('modal-open');
+  setTimeout(() => $('#checkinModal').classList.add('open'),20);
+}
+
+function closeCheckin(){
+  $('#checkinModal').classList.remove('open');
+  document.body.classList.remove('modal-open');
+  setTimeout(() => {$('#checkinModal').hidden = true},220);
+}
+
+function renderRating(){
+  $$('#ratingStars button').forEach(button => {
+    const active = Number(button.dataset.rating) <= checkinRating;
+    button.classList.toggle('active',active);
+    button.setAttribute('aria-checked',String(Number(button.dataset.rating) === checkinRating));
+  });
+  $('#ratingText').textContent = checkinRating ? ['','不太满意','还可以','挺不错','很好吃','必须再来'][checkinRating] : '请选择 1–5 星';
+}
+
+function renderPhotoPreviews(){
+  previewUrls.forEach(URL.revokeObjectURL);
+  previewUrls = checkinFiles.map(file => URL.createObjectURL(file));
+  $('#photoPreviews').innerHTML = previewUrls.map((url,index) => `<figure><img src="${url}" alt="待上传照片 ${index + 1}"><button type="button" data-remove-photo="${index}" aria-label="移除第 ${index + 1} 张照片">×</button></figure>`).join('');
+  $$('[data-remove-photo]').forEach(button => button.addEventListener('click',() => {
+    checkinFiles.splice(Number(button.dataset.removePhoto),1);
+    renderPhotoPreviews();
+  }));
+}
+
+function selectPhotos(files){
+  const valid = [...files].filter(file => ['image/jpeg','image/png','image/webp'].includes(file.type) && file.size <= 5 * 1024 * 1024);
+  if(valid.length !== files.length) showToast('仅支持 JPG、PNG、WebP，且每张不超过 5MB');
+  checkinFiles = [...checkinFiles,...valid].slice(0,3);
+  renderPhotoPreviews();
+  $('#checkinPhotos').value = '';
+}
+
+async function saveCheckin(event){
+  event.preventDefault();
+  if(!checkinRating){$('#checkinStatus').textContent = '请先选择评分';return}
+  const submit = $('#submitCheckin');
+  submit.disabled = true;
+  submit.textContent = '正在保存……';
+  $('#checkinStatus').textContent = checkinFiles.length ? '正在保存记录并上传照片' : '正在保存记录';
+  try{
+    const user = await ensureUser();
+    const food = foods[foodIndex];
+    const place = $('#checkinPlace').value.trim();
+    const {data:checkin,error} = await supabaseClient.from('checkins').insert({
+      user_id:user.id,
+      food_name:food.name,
+      cuisine:food.cuisine,
+      restaurant:place || null,
+      cafeteria:cafeterias.includes(place) ? place : null,
+      rating:checkinRating,
+      comment:$('#checkinComment').value.trim() || null,
+      price:$('#checkinPrice').value ? Number($('#checkinPrice').value) : null
+    }).select().single();
+    if(error) throw error;
+    const photoRows = [];
+    for(const [index,file] of checkinFiles.entries()){
+      const extension = file.type.split('/')[1].replace('jpeg','jpg');
+      const path = `${user.id}/${checkin.id}/${Date.now()}-${index}.${extension}`;
+      const {error:uploadError} = await supabaseClient.storage.from('checkin-photos').upload(path,file,{contentType:file.type,upsert:false});
+      if(uploadError) throw uploadError;
+      photoRows.push({checkin_id:checkin.id,user_id:user.id,image_path:path});
+    }
+    if(photoRows.length){
+      const {error:photoError} = await supabaseClient.from('checkin_photos').insert(photoRows);
+      if(photoError) throw photoError;
+    }
+    closeCheckin();
+    showToast(`${food.name}打卡成功，已经收进美食日记！`);
+    await loadRecords();
+    setTimeout(() => $('#records').scrollIntoView({behavior:'smooth'}),250);
+  }catch(error){
+    console.error(error);
+    $('#checkinStatus').textContent = `保存失败：${error.message || '请稍后重试'}`;
+  }finally{
+    submit.disabled = false;
+    submit.innerHTML = '保存这顿饭 <span>→</span>';
+  }
+}
+
+async function signedPhotoMap(rows){
+  const paths = rows.flatMap(row => (row.checkin_photos || []).map(photo => photo.image_path));
+  if(!paths.length) return {};
+  const {data,error} = await supabaseClient.storage.from('checkin-photos').createSignedUrls(paths,3600);
+  if(error) return {};
+  return Object.fromEntries(data.map(item => [item.path,item.signedUrl]));
+}
+
+async function loadRecords(){
+  const grid = $('#recordsGrid');
+  grid.classList.add('loading');
+  try{
+    const user = await ensureUser();
+    const {data,error} = await supabaseClient.from('checkins').select('*,checkin_photos(id,image_path)').eq('user_id',user.id).order('created_at',{ascending:false});
+    if(error) throw error;
+    const photoUrls = await signedPhotoMap(data);
+    const average = data.length ? (data.reduce((sum,item) => sum + item.rating,0) / data.length).toFixed(1) : '—';
+    $('#recordSummary').innerHTML = `<strong>${data.length}</strong><span>次打卡</span><strong>${average}</strong><span>平均评分</span>`;
+    if(!data.length){grid.innerHTML = '<div class="records-empty"><b>🍽️</b><strong>还没有打卡</strong><p>摇到喜欢的菜后，点击“就吃这个”留下第一顿记录吧。</p></div>';return}
+    grid.innerHTML = data.map(item => {
+      const firstPhoto = item.checkin_photos?.[0]?.image_path;
+      const cover = firstPhoto && photoUrls[firstPhoto];
+      const date = new Intl.DateTimeFormat('zh-CN',{month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(item.eaten_at));
+      return `<article class="record-card" data-record-id="${item.id}">
+        ${cover ? `<img src="${cover}" alt="${escapeHtml(item.food_name)}的打卡照片">` : `<div class="record-placeholder">${['🍜','🍲','🍚','🥘'][item.rating % 4]}</div>`}
+        <div class="record-card-body"><span>${escapeHtml(item.cuisine)} · ${date}</span><h3>${escapeHtml(item.food_name)}</h3><div class="record-rating">${'★'.repeat(item.rating)}<i>${'★'.repeat(5-item.rating)}</i></div>${item.restaurant ? `<p class="record-place">⌖ ${escapeHtml(item.restaurant)}</p>` : ''}${item.comment ? `<p>${escapeHtml(item.comment)}</p>` : ''}<footer>${item.price !== null ? `<b>¥${Number(item.price).toFixed(2)}</b>` : '<b>今日好味道</b>'}<button type="button" data-delete-record="${item.id}">删除</button></footer></div>
+      </article>`;
+    }).join('');
+    $$('[data-delete-record]').forEach(button => button.addEventListener('click',() => deleteRecord(button.dataset.deleteRecord)));
+  }catch(error){
+    console.error(error);
+    grid.innerHTML = `<div class="records-empty"><b>⚠️</b><strong>记录暂时加载失败</strong><p>${escapeHtml(error.message || '请稍后重试')}</p></div>`;
+  }finally{grid.classList.remove('loading')}
+}
+
+async function deleteRecord(id){
+  if(!confirm('确定删除这条打卡吗？照片也会一起删除。')) return;
+  try{
+    const {data:photos} = await supabaseClient.from('checkin_photos').select('image_path').eq('checkin_id',id);
+    if(photos?.length) await supabaseClient.storage.from('checkin-photos').remove(photos.map(photo => photo.image_path));
+    const {error} = await supabaseClient.from('checkins').delete().eq('id',id);
+    if(error) throw error;
+    showToast('这条打卡已经删除');
+    await loadRecords();
+  }catch(error){showToast(`删除失败：${error.message}`)}
+}
+
 $$('.mood').forEach(button => button.addEventListener('click',() => {
   const isCasual = button.dataset.mood === 'casual';
   if(isCasual){
@@ -339,7 +507,21 @@ $('#resetCafeterias').addEventListener('click',() => {
   localStorage.setItem('fandazi-excluded-cafeterias','[]');
   renderCafeterias();
 });
+$('#closeCheckin').addEventListener('click',closeCheckin);
+$('#closeCheckinBackdrop').addEventListener('click',closeCheckin);
+$('#checkinForm').addEventListener('submit',saveCheckin);
+$('#checkinPhotos').addEventListener('change',event => selectPhotos(event.target.files));
+$('#checkinComment').addEventListener('input',event => $('#commentCount').textContent = event.target.value.length);
+$('#refreshRecords').addEventListener('click',loadRecords);
+$$('#ratingStars button').forEach(button => button.addEventListener('click',() => {
+  checkinRating = Number(button.dataset.rating);
+  renderRating();
+}));
+document.addEventListener('keydown',event => {
+  if(event.key === 'Escape' && !$('#checkinModal').hidden) closeCheckin();
+});
 
 renderCuisineGrid();
 renderCafeterias();
 switchCharacter(characterIndex);
+loadRecords();
