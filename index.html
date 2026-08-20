@@ -29,8 +29,8 @@
     <nav class="side-nav">
       <a class="active" href="#top"><svg><use href="#i-home"/></svg><span>首页</span></a>
       <a href="#fortune"><svg><use href="#i-dice"/></svg><span>摇一摇</span></a>
-      <a href="#coming-soon"><svg><use href="#i-check"/></svg><span>吃饭打卡</span></a>
-      <a href="#coming-soon"><svg><use href="#i-book"/></svg><span>我的记录</span></a>
+      <a href="#fortune"><svg><use href="#i-check"/></svg><span>吃饭打卡</span></a>
+      <a href="#records"><svg><use href="#i-book"/></svg><span>我的记录</span></a>
       <a href="#coming-soon"><svg><use href="#i-heart"/></svg><span>餐厅收藏</span></a>
       <a href="#coming-soon"><svg><use href="#i-chart"/></svg><span>统计分析</span></a>
     </nav>
@@ -135,22 +135,43 @@
       </div>
     </section>
 
-    <section class="coming-soon" id="coming-soon">
-      <span>下一站</span>
-      <h2>把每一顿喜欢，慢慢变成你的美食地图。</h2>
-      <p>吃饭打卡、收藏和个人统计将在首页确认后继续开发。</p>
+    <section class="records" id="records" aria-labelledby="records-title">
+      <div class="records-heading">
+        <div><span>MY FOOD JOURNAL</span><h2 id="records-title">我的干饭记录</h2><p>每一顿喜欢，都慢慢变成你的美食地图。</p></div>
+        <button id="refreshRecords" type="button">↻ 刷新记录</button>
+      </div>
+      <div class="record-summary" id="recordSummary"><strong>0</strong><span>次打卡</span><strong>—</strong><span>平均评分</span></div>
+      <div class="records-grid" id="recordsGrid"><div class="records-empty"><b>🍽️</b><strong>还没有打卡</strong><p>摇到喜欢的菜后，点击“就吃这个”留下第一顿记录吧。</p></div></div>
     </section>
   </main>
 
   <nav class="bottom-nav" aria-label="移动端导航">
     <a class="active" href="#top"><svg><use href="#i-home"/></svg><span>首页</span></a>
     <a href="#fortune"><svg><use href="#i-dice"/></svg><span>摇一摇</span></a>
-    <a class="add" href="#coming-soon"><svg><use href="#i-check"/></svg><span>打卡</span></a>
-    <a href="#coming-soon"><svg><use href="#i-book"/></svg><span>记录</span></a>
+    <a class="add" href="#fortune"><svg><use href="#i-check"/></svg><span>打卡</span></a>
+    <a href="#records"><svg><use href="#i-book"/></svg><span>记录</span></a>
     <a href="#coming-soon"><svg><use href="#i-heart"/></svg><span>我的</span></a>
   </nav>
 
   <div class="toast" id="toast" role="status"></div>
+  <div class="checkin-modal" id="checkinModal" hidden>
+    <button class="modal-backdrop" id="closeCheckinBackdrop" type="button" aria-label="关闭打卡"></button>
+    <section class="checkin-sheet" role="dialog" aria-modal="true" aria-labelledby="checkinTitle">
+      <button class="modal-close" id="closeCheckin" type="button" aria-label="关闭">×</button>
+      <span class="checkin-kicker">FOOD CHECK-IN · 今日打卡</span>
+      <div class="checkin-food"><img id="checkinFoodImage" alt=""><div><small id="checkinCuisine"></small><h2 id="checkinTitle">记录这一顿</h2><p id="checkinFoodName"></p></div></div>
+      <form id="checkinForm">
+        <fieldset class="rating-field"><legend>这顿饭打几分？</legend><div id="ratingStars" class="rating-stars" role="radiogroup" aria-label="评分"><button type="button" data-rating="1" aria-label="1星">★</button><button type="button" data-rating="2" aria-label="2星">★</button><button type="button" data-rating="3" aria-label="3星">★</button><button type="button" data-rating="4" aria-label="4星">★</button><button type="button" data-rating="5" aria-label="5星">★</button></div><small id="ratingText">请选择 1–5 星</small></fieldset>
+        <div class="form-row"><label>餐厅 / 食堂<input id="checkinPlace" maxlength="60" placeholder="例如：家园食堂二楼"></label><label>消费金额<input id="checkinPrice" type="number" min="0" max="999999" step="0.01" inputmode="decimal" placeholder="¥ 可不填"></label></div>
+        <label>这一顿怎么样？<textarea id="checkinComment" maxlength="500" rows="3" placeholder="味道、心情、想记住的瞬间……"></textarea><small class="char-count"><span id="commentCount">0</span>/500</small></label>
+        <label class="photo-picker" for="checkinPhotos"><span>＋ 添加照片</span><small>最多 3 张，每张不超过 5MB</small><input id="checkinPhotos" type="file" accept="image/jpeg,image/png,image/webp" multiple></label>
+        <div class="photo-previews" id="photoPreviews"></div>
+        <p class="checkin-status" id="checkinStatus" role="status"></p>
+        <button class="submit-checkin" id="submitCheckin" type="submit">保存这顿饭 <span>→</span></button>
+      </form>
+    </section>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>
 </body>
 </html>
