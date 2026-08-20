@@ -66,7 +66,7 @@
 
         <button class="roll-cta" id="rollCta" type="button">
           <span class="dice-icon">⚄</span>
-          <span><strong>开始摇一摇</strong><small>让今天的饭自己来找你</small></span>
+          <span><strong>先摇一个菜系</strong><small>第一步选菜系，第二步选具体吃什么</small></span>
           <svg><use href="#i-arrow"/></svg>
         </button>
         <a class="cafeteria-cta" href="#cafeteria">
@@ -93,7 +93,7 @@
       </div>
 
       <aside class="fortune-card" id="fortune" aria-live="polite">
-        <div class="fortune-head"><span>今日命运之选</span><small id="fortuneCount">LUCKY 01</small></div>
+        <div class="fortune-head"><span>今日命运之选</span><small><b id="fortuneStep">READY</b> · <i id="fortuneCount">LUCKY 00</i></small></div>
         <div class="fortune-photo"><img id="fortuneImage" src="assets/food/sukiyaki.webp" width="900" height="900" alt="寿喜烧"><span id="cuisineTag">日料</span></div>
         <div class="fortune-body">
           <p id="fortuneHint">暖乎乎的，今天正合适</p>
@@ -112,7 +112,7 @@
         <div><span>EXPLORE TASTES</span><h2 id="inspiration-title">今天想从哪种味道开始？</h2></div>
         <a href="#fortune">看看全部 16 种菜系 <svg><use href="#i-arrow"/></svg></a>
       </div>
-      <div class="category-state" id="categoryState" hidden>正在从 <strong id="selectedCuisine"></strong> 中挑选 <button id="clearCuisine" type="button">取消筛选</button></div>
+      <div class="category-state" id="categoryState" hidden>第一步已选 <strong id="selectedCuisine"></strong> <button id="clearCuisine" type="button">重新选菜系</button></div>
       <div class="food-grid" id="foodGrid" aria-label="选择菜系"></div>
     </section>
 
@@ -154,4 +154,3 @@
   <script src="app.js"></script>
 </body>
 </html>
-
